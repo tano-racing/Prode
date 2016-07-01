@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="btn_facebook" type="id" />
+    <item name="btn_google" type="id" />
+    <item name="tv_equipo_item" type="id" />
+
+    <item name="btn_nuevo" type="id" />
+    <item name="btn_unirse" type="id" />
+
+
+
+</resources>
