@@ -1,20 +1,16 @@
 package nofuemagia.prode.model;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 import java.util.List;
 
-/**
- * Created by jlionti on 01/07/2016. No Fue Magia
- */
-@DatabaseTable(tableName = "Paises")
-public class Pais {
+@Table(name = "Paises", id = "idPais")
+public class Pais extends Model {
 
-    @DatabaseField(generatedId = true)
-    private long idPais;
-
-    @DatabaseField
+    @Column(name = "nombre")
     public String nombre;
 
     public Pais() {
@@ -24,10 +20,6 @@ public class Pais {
     public Pais(String nombre) {
         super();
         this.nombre = nombre;
-    }
-
-    public long getIdPais() {
-        return idPais;
     }
 
     public String getNombre() {

@@ -4,24 +4,22 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.List;
 
 /**
  * Created by jlionti on 01/07/2016. No Fue Magia
  */
-@DatabaseTable(tableName = "Equipos")
-public class Liga {
+@Table(name = "Ligas", id="idLiga")
+public class Liga extends Model {
 
-    @DatabaseField(generatedId = true)
-    private long idLiga;
+    @Column(name = "idLiga")
+    private long id;
 
-    @DatabaseField
+    @Column(name = "nombre")
     public String nombre;
 
-    @DatabaseField
+    @Column(name = "paisId")
     public Pais pais;
 
     public Liga() {
@@ -34,17 +32,13 @@ public class Liga {
         this.pais = pais;
     }
 
-    public long getIdLiga() {
-        return idLiga;
-    }
-
     public String getNombre() {
         return nombre;
     }
 
-    public Pais getPais() {
+    /*public Pais getPais() {
         return pais;
-    }
+    }*/
 
     public static List<Liga> getTodas() {
         return new Select()
@@ -55,7 +49,7 @@ public class Liga {
     public static Liga getLiga(Pais pais, String nombre) {
         return new Select()
                 .from(Liga.class)
-                .where("nombre = ? AND paisId = ?", nombre, pais.getIdPais())
+                .where("nombre = ? AND paisId = ?", nombre, pais.getId())
                 .executeSingle();
     }
 }
