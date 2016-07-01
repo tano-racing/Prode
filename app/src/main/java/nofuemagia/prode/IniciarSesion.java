@@ -61,6 +61,8 @@ public class IniciarSesion extends AppCompatActivity {
 
     private void mostrarListaEquipos() {
 
+        List<Pais> paises = Pais.getPaises();
+
         Pais argentina = Pais.getPais("Argentina");
         Liga primera = Liga.getLiga(argentina, "Primera Division");
         List<Equipo> equipos = Equipo.getEquipos(primera);

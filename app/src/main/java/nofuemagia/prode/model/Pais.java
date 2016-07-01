@@ -7,8 +7,14 @@ import com.activeandroid.query.Select;
 
 import java.util.List;
 
-@Table(name = "Paises", id = "idPais")
+/**
+ * Created by jlionti on 01/07/2016. No Fue Magia
+ */
+@Table(name = "Paises")
 public class Pais extends Model {
+
+    @Column(name = "idPais")
+    public long id;
 
     @Column(name = "nombre")
     public String nombre;

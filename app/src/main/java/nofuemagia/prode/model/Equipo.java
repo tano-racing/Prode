@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by jlionti on 01/07/2016. No Fue Magia
  */
-@Table(name = "Equipos", id = "idEquipo")
+@Table(name = "Equipos")
 public class Equipo extends Model {
 
     @Column(name = "nombre")

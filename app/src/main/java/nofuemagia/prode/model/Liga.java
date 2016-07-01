@@ -10,11 +10,8 @@ import java.util.List;
 /**
  * Created by jlionti on 01/07/2016. No Fue Magia
  */
-@Table(name = "Ligas", id="idLiga")
+@Table(name = "Ligas")
 public class Liga extends Model {
-
-    @Column(name = "idLiga")
-    private long id;
 
     @Column(name = "nombre")
     public String nombre;
@@ -36,9 +33,9 @@ public class Liga extends Model {
         return nombre;
     }
 
-    /*public Pais getPais() {
+    public Pais getPais() {
         return pais;
-    }*/
+    }
 
     public static List<Liga> getTodas() {
         return new Select()
