@@ -10,6 +10,12 @@
     <item name="frag_container_principal" type="id" />
     <item name="tabs_torneo" type="id" />
     <item name="viewpager_torneo" type="id" />
+    <item name="rv_posiciones" type="id" />
+    <item name="item_posicion_totales" type="id" />
+    <item name="item_posicion_acertados" type="id" />
+    <item name="item_posicion_puntos" type="id" />
+    <item name="item_posicion_nombre" type="id" />
+    <item name="item_posicion_n" type="id" />
 
 
 </resources>

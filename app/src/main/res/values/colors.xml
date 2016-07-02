@@ -5,4 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorAccentTrans">#88FF4081</color>
     <color name="sombra">#22000000</color>
+
+    <color name="oro">#ffbf00</color>
+    <color name="plata">#c0c0c0</color>
+    <color name="bronce">#cd7f32</color>
+
+
 </resources>

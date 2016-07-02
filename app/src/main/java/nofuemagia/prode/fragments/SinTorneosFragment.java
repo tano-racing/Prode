@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.activeandroid.ActiveAndroid;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
@@ -23,6 +24,7 @@ import nofuemagia.prode.Util;
 import nofuemagia.prode.model.Liga;
 import nofuemagia.prode.model.Torneo;
 import nofuemagia.prode.model.Usuario;
+import nofuemagia.prode.model.UsuarioTorneo;
 
 /**
  * Created by Tano on 01/07/2016.
@@ -33,6 +35,8 @@ public class SinTorneosFragment extends Fragment {
 
     public interface OnTorneoListener {
         void TorneoCreado(Long id);
+
+        void Error(String mensaje);
 
         void UnidoAlTorneo(Long id);
     }
@@ -110,14 +114,33 @@ public class SinTorneosFragment extends Fragment {
 
         SharedPreferences preferences = getContext().getSharedPreferences(Util.PREFERENCES, Context.MODE_PRIVATE);
 
+        Usuario actual = Usuario.getUsuario(preferences.getString(Util.FBID, null));
+
+        ActiveAndroid.beginTransaction();
+
         Torneo nuevo = new Torneo();
-        nuevo.liga = liga;
-        nuevo.nombre = nombreTorneo;
-        nuevo.usuario = Usuario.getUsuario(preferences.getString(Util.FBID, null));
-        nuevo.sincronizado = 0;
+        nuevo.setLiga(liga);
+        nuevo.setNombre(nombreTorneo);
+        nuevo.setUsuario(actual);
+        nuevo.setSincronizado(0);
         nuevo.save();
 
-        onTorneoListener.TorneoCreado(nuevo.getId());
+        UsuarioTorneo participante = new UsuarioTorneo();
+        participante.setUsuario(actual);
+        participante.setTorneo(nuevo);
+        participante.setPuntos(0);
+        participante.setPronosticosAcertados(0);
+        participante.setPronosticosTotales(0);
+        participante.save();
+
+        if (participante.getId() != -1) {
+            ActiveAndroid.setTransactionSuccessful();
+            ActiveAndroid.endTransaction();
+
+            onTorneoListener.TorneoCreado(nuevo.getId());
+        } else {
+            onTorneoListener.Error("Error desconocido");
+        }
     }
 
     private void unirseLiga(View view) {

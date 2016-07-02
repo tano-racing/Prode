@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -68,6 +69,11 @@ public class PantallaPrincipal extends AppCompatActivity implements SinTorneosFr
     @Override
     public void TorneoCreado(Long id) {
         PonerTorneoFrag(id);
+    }
+
+    @Override
+    public void Error(String mensaje) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
     }
 
     @Override

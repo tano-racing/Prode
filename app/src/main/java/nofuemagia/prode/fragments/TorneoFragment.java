@@ -25,7 +25,7 @@ public class TorneoFragment extends Fragment {
         TabLayout tabPlanos = (TabLayout) v.findViewById(R.id.tabs_torneo);
 
         ViewPager pager = (ViewPager) v.findViewById(R.id.viewpager_torneo);
-        TorneoFragmentAdapter adapter = new TorneoFragmentAdapter(getFragmentManager(), getContext());
+        TorneoFragmentAdapter adapter = new TorneoFragmentAdapter(getFragmentManager(), getContext(), getArguments());
 
         pager.setAdapter(adapter);
         tabPlanos.setupWithViewPager(pager);

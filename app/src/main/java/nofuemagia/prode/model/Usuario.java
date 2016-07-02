@@ -31,6 +31,14 @@ public class Usuario extends Model {
         this.nombre = nombre;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }

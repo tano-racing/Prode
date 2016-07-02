@@ -36,6 +36,22 @@ public class Torneo extends Model {
         this.sincronizado = sincronizado;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre.trim();
+    }
+
+    public void setLiga(Liga liga) {
+        this.liga = liga;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setSincronizado(int sincronizado) {
+        this.sincronizado = sincronizado;
+    }
+
     public String getNombre() {
         return nombre;
     }
