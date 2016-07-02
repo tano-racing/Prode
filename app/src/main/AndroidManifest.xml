@@ -7,12 +7,14 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:fullBackupContent="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
 
-        <activity android:name=".IniciarSesion" />
-        <activity android:name=".PantallaPrincipal">
+        <activity android:name=".activities.IniciarSesion" />
+        <activity android:name=".activities.PantallaPrincipal">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

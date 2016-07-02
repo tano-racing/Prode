@@ -1,4 +1,4 @@
-package nofuemagia.prode;
+package nofuemagia.prode.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,11 +9,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.joanzapata.iconify.widget.IconButton;
-
 import java.util.List;
 
-import nofuemagia.prode.model.Equipo;
+import nofuemagia.prode.R;
+import nofuemagia.prode.Util;
+import nofuemagia.prode.adapters.LigasAdapter;
 import nofuemagia.prode.model.Liga;
 
 /**
@@ -32,14 +32,14 @@ public class PantallaPrincipal extends AppCompatActivity {
 
         revisarSiInicioSesion();
 
-        IconButton btnNuevo = (IconButton) findViewById(R.id.btn_nuevo);
-        btnNuevo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                elegirLiga(view);
-            }
-        });
-        IconButton btnUnirse = (IconButton) findViewById(R.id.btn_unirse);
+//        IconButton btnNuevo = (IconButton) findViewById(R.id.btn_nuevo);
+//        btnNuevo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                elegirLiga(view);
+//            }
+//        });
+//        IconButton btnUnirse = (IconButton) findViewById(R.id.btn_unirse);
     }
 
     private void revisarSiInicioSesion() {

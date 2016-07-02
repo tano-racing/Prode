@@ -18,10 +18,11 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:shadowColor="@color/sombra"
+        android:onClick="elegirLiga"
         android:shadowDx="3"
         android:shadowDy="3"
         android:shadowRadius="1"
-        android:text="{fa-plus 150%} Nuevo Torneo" />
+        android:text="@string/nuevo_torneo" />
 
     <com.joanzapata.iconify.widget.IconButton
         android:id="@id/btn_unirse"
@@ -39,7 +40,7 @@
         android:shadowDx="3"
         android:shadowDy="3"
         android:shadowRadius="1"
-        android:text="{fa-sign-in 150%} Unirse a un Torneo" />
+        android:text="@string/unirse_a_un_torneo" />
 
 
 </RelativeLayout>

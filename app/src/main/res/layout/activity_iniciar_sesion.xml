@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IniciarSesion">
+    tools:context=".activities.IniciarSesion">
 
 
     <com.joanzapata.iconify.widget.IconButton
@@ -61,6 +61,7 @@
         android:text="@string/iniciar_sesion_con_google" />
 
     <ImageView
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -69,7 +70,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-android:visibility="gone"
+        android:contentDescription="@string/imagen_de_portada"
         android:scaleType="centerCrop"
         android:src="@mipmap/portada" />
 

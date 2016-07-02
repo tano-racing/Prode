@@ -1,19 +1,21 @@
-package nofuemagia.prode;
+package nofuemagia.prode.activities;
 
 import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import nofuemagia.prode.R;
+import nofuemagia.prode.Util;
+import nofuemagia.prode.adapters.EquiposAdapter;
 import nofuemagia.prode.model.Equipo;
 import nofuemagia.prode.model.Liga;
 import nofuemagia.prode.model.Pais;
@@ -60,8 +62,6 @@ public class IniciarSesion extends AppCompatActivity {
     }
 
     private void mostrarListaEquipos() {
-
-        List<Pais> paises = Pais.getPaises();
 
         Pais argentina = Pais.getPais("Argentina");
         Liga primera = Liga.getLiga(argentina, "Primera Division");

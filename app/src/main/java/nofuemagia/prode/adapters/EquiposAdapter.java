@@ -1,4 +1,4 @@
-package nofuemagia.prode;
+package nofuemagia.prode.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,19 +9,19 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import nofuemagia.prode.R;
 import nofuemagia.prode.model.Equipo;
-import nofuemagia.prode.model.Liga;
 
 /**
  * Created by jlionti on 01/07/2016. No Fue Magia
  */
-public class LigasAdapter extends BaseAdapter {
+public class EquiposAdapter extends BaseAdapter {
 
 
     private final Context mContext;
-    private final List<Liga> mDataSet;
+    private final List<Equipo> mDataSet;
 
-    public LigasAdapter(Context context, List<Liga> dataset) {
+    public EquiposAdapter(Context context, List<Equipo> dataset) {
         mContext = context;
         mDataSet = dataset;
     }
@@ -32,7 +32,7 @@ public class LigasAdapter extends BaseAdapter {
     }
 
     @Override
-    public Liga getItem(int i) {
+    public Equipo getItem(int i) {
         return mDataSet.get(i);
     }
 
@@ -43,7 +43,7 @@ public class LigasAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        Liga liga = mDataSet.get(i);
+        Equipo equipo = mDataSet.get(i);
 
         View v = convertView;
         ViewHolder holder;
@@ -58,7 +58,7 @@ public class LigasAdapter extends BaseAdapter {
             holder = (ViewHolder) v.getTag();
         }
 
-        holder.tvEquipo.setText(String.format("%s (%s)", liga.getNombre(), liga.getPais().getNombre()));
+        holder.tvEquipo.setText(equipo.getNombre());
 
         return v;
     }

@@ -3,4 +3,7 @@
     <string name="iniciar_sesion_con_facebook">{fa-facebook-square 150%} Iniciar Sesion con Facebook</string>
     <string name="iniciar_sesion_con_twitter">{fa-twitter-square 150%} Iniciar Sesion con Twitter</string>
     <string name="iniciar_sesion_con_google">{fa-google-plus-square 150%} Iniciar Sesion Con Google</string>
+    <string name="nuevo_torneo">{fa-plus 150%} Nuevo Torneo</string>
+    <string name="unirse_a_un_torneo">{fa-sign-in 150%} Unirse a un Torneo</string>
+    <string name="imagen_de_portada">Imagen de portada</string>
 </resources>
