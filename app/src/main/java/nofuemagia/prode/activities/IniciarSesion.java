@@ -68,18 +68,24 @@ public class IniciarSesion extends AppCompatActivity {
         List<Equipo> equipos = Equipo.getEquipos(primera);
 
         final EquiposAdapter adapter = new EquiposAdapter(this, equipos);
+//        CharSequence[] equiposStrings = new CharSequence[equipos.size()];
+//
+//        for (int i = 0; i < equipos.size(); i++)
+//            equiposStrings[i] = equipos.get(i).getNombre();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("¿De que cuadro sos hincha?");
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                Equipo equipo = adapter.getItem(which);
-                guardarInformacion("0123456789", "Julián Patricio Lionti", equipo.getId().intValue());
-                iniciarProde();
-            }
-        });
-        builder.show();
+        builder.setTitle("¿De que cuadro sos hincha?")
+                .setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Equipo equipo = adapter.getItem(i);
+                        guardarInformacion("0123456789", "Julián Patricio Lionti", equipo.getId().intValue());
+                        iniciarProde();
+                    }
+                })
+                .show();
+
+
     }
 
     private void iniciarProde() {

@@ -1,69 +1,57 @@
 package nofuemagia.prode.adapters;
 
 import android.content.Context;
-import android.view.LayoutInflater;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
 
-import nofuemagia.prode.R;
+import nofuemagia.prode.Util;
 import nofuemagia.prode.model.Equipo;
 
 /**
  * Created by jlionti on 01/07/2016. No Fue Magia
  */
-public class EquiposAdapter extends BaseAdapter {
+public class EquiposAdapter extends ArrayAdapter<Equipo> {
 
 
     private final Context mContext;
     private final List<Equipo> mDataSet;
 
     public EquiposAdapter(Context context, List<Equipo> dataset) {
+        super(context, android.R.layout.select_dialog_item, android.R.id.text1, dataset);
         mContext = context;
         mDataSet = dataset;
     }
 
     @Override
-    public int getCount() {
-        return mDataSet.size();
-    }
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View v = super.getView(position, convertView, parent);
+        TextView tv = (TextView) v.findViewById(android.R.id.text1);
 
-    @Override
-    public Equipo getItem(int i) {
-        return mDataSet.get(i);
-    }
+        Equipo usado = mDataSet.get(position);
 
-    @Override
-    public long getItemId(int i) {
-        return mDataSet.get(i).getId();
-    }
+        int res = Util.getResId(mContext, usado.getNombre().toLowerCase().replace(" ", ""), "mipmap");
+        if (res > 0) {
+            Drawable dr = ContextCompat.getDrawable(mContext, res);
+            Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+            Drawable d = new BitmapDrawable(mContext.getResources(), Bitmap.createScaledBitmap(bitmap, 75, 75, true));
 
-    @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
-        Equipo equipo = mDataSet.get(i);
+            tv.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
+        } else
+            tv.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
-        View v = convertView;
-        ViewHolder holder;
-        if (null == v) {
-            holder = new ViewHolder();
-
-            v = LayoutInflater.from(mContext).inflate(R.layout.item_equipo, viewGroup, false);
-            holder.tvEquipo = (TextView) v.findViewById(R.id.tv_equipo_item);
-
-            v.setTag(holder);
-        } else {
-            holder = (ViewHolder) v.getTag();
-        }
-
-        holder.tvEquipo.setText(equipo.getNombre());
+        //Add margin between image and text (support various screen densities)
+        int dp5 = (int) (5 * mContext.getResources().getDisplayMetrics().density + 0.5f);
+        tv.setCompoundDrawablePadding(dp5);
+        tv.setText(usado.getNombre());
 
         return v;
-    }
-
-    private class ViewHolder {
-        public TextView tvEquipo;
     }
 }

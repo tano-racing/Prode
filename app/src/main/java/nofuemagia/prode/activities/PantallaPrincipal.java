@@ -9,17 +9,19 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
+
 import java.util.List;
 
 import nofuemagia.prode.R;
 import nofuemagia.prode.Util;
-import nofuemagia.prode.adapters.LigasAdapter;
 import nofuemagia.prode.model.Liga;
 
 /**
  * Created by jlionti on 01/07/2016. No Fue Magia
  */
-public class PantallaPrincipal extends AppCompatActivity {
+public class PantallaPrincipal extends AppCompatActivity implements DialogInterface.OnClickListener {
 
     private SharedPreferences preferences;
 
@@ -54,19 +56,27 @@ public class PantallaPrincipal extends AppCompatActivity {
     public void elegirLiga(View v) {
 
         List<Liga> ligas = Liga.getTodas();
+        CharSequence[] ligasStrings = new CharSequence[ligas.size()];
 
-        final LigasAdapter adapter = new LigasAdapter(this, ligas);
+        for (int i = 0; i < ligas.size(); i++)
+            ligasStrings[i] = String.format("%s (%s)", ligas.get(i).getNombre(), ligas.get(i).getPais().getNombre());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Elegí una liga");
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                /*Equipo equipo = adapter.getItem(which);
-                guardarInformacion("0123456789", "Julián Patricio Lionti", equipo.getId().intValue());
-                iniciarProde();*/
-            }
-        });
-        builder.show();
+        builder.setTitle("Nuevo Torneo")
+                .setIcon(new IconDrawable(this, FontAwesomeIcons.fa_plus).colorRes(R.color.colorAccent).actionBarSize())
+                .setItems(ligasStrings, this)
+                .show();
+    }
+
+    @Override
+    public void onClick(DialogInterface dialogInterface, int i) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("Nuevo Torneo")
+                .setView(R.layout.dialog_nombre_torneo)
+                .setIcon(new IconDrawable(this, FontAwesomeIcons.fa_plus).colorRes(R.color.colorAccent).actionBarSize())
+                .setPositiveButton(android.R.string.ok, this)
+                .show();
+
     }
 }

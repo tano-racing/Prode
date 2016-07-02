@@ -6,4 +6,5 @@
     <string name="nuevo_torneo">{fa-plus 150%} Nuevo Torneo</string>
     <string name="unirse_a_un_torneo">{fa-sign-in 150%} Unirse a un Torneo</string>
     <string name="imagen_de_portada">Imagen de portada</string>
+    <string name="nombre_torneo">Nombre del torneo</string>
 </resources>

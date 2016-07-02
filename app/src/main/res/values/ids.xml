@@ -6,7 +6,7 @@
 
     <item name="btn_nuevo" type="id" />
     <item name="btn_unirse" type="id" />
-
+    <item name="et_nombre_torneo" type="id" />
 
 
 </resources>
