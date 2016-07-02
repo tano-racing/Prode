@@ -1,29 +1,31 @@
 package nofuemagia.prode.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.util.List;
 
 import nofuemagia.prode.R;
 import nofuemagia.prode.Util;
-import nofuemagia.prode.model.Liga;
+import nofuemagia.prode.fragments.SinTorneosFragment;
+import nofuemagia.prode.fragments.TorneoFragment;
+import nofuemagia.prode.model.Torneo;
+import nofuemagia.prode.model.Usuario;
 
 /**
  * Created by jlionti on 01/07/2016. No Fue Magia
  */
-public class PantallaPrincipal extends AppCompatActivity implements DialogInterface.OnClickListener {
+public class PantallaPrincipal extends AppCompatActivity implements SinTorneosFragment.OnTorneoListener {
+
 
     private SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,51 +34,56 @@ public class PantallaPrincipal extends AppCompatActivity implements DialogInterf
 
         preferences = getSharedPreferences(Util.PREFERENCES, MODE_PRIVATE);
 
-        revisarSiInicioSesion();
+        if (!InicioSesion())
+            return;
 
-//        IconButton btnNuevo = (IconButton) findViewById(R.id.btn_nuevo);
-//        btnNuevo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                elegirLiga(view);
-//            }
-//        });
-//        IconButton btnUnirse = (IconButton) findViewById(R.id.btn_unirse);
+        Usuario actual = Usuario.getUsuario(preferences.getString(Util.FBID, null));
+        List<Torneo> torneos = Torneo.getTorneos(actual);
+        if (torneos != null && torneos.size() > 0) {
+            PonerTorneoFrag(torneos.get(0).getId());
+        } else {
+            Fragment frag = Fragment.instantiate(this, SinTorneosFragment.class.getName(), null);
+
+            FragmentManager fm = getSupportFragmentManager();
+            fm.beginTransaction()
+                    .replace(R.id.frag_container_principal, frag)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
+        }
     }
 
-    private void revisarSiInicioSesion() {
+    private boolean InicioSesion() {
         //TODO CHEQUEAR CONEXCION CON LAS REDES
         if (!preferences.getBoolean(Util.TODO_LISTO, false)) {
             finish();
             Intent intent = new Intent(PantallaPrincipal.this, IniciarSesion.class);
             startActivity(intent);
+            return false;
         }
+
+        return true;
     }
 
-    public void elegirLiga(View v) {
 
-        List<Liga> ligas = Liga.getTodas();
-        CharSequence[] ligasStrings = new CharSequence[ligas.size()];
-
-        for (int i = 0; i < ligas.size(); i++)
-            ligasStrings[i] = String.format("%s (%s)", ligas.get(i).getNombre(), ligas.get(i).getPais().getNombre());
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Nuevo Torneo")
-                .setIcon(new IconDrawable(this, FontAwesomeIcons.fa_plus).colorRes(R.color.colorAccent).actionBarSize())
-                .setItems(ligasStrings, this)
-                .show();
+    @Override
+    public void TorneoCreado(Long id) {
+        PonerTorneoFrag(id);
     }
 
     @Override
-    public void onClick(DialogInterface dialogInterface, int i) {
+    public void UnidoAlTorneo(Long id) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Nuevo Torneo")
-                .setView(R.layout.dialog_nombre_torneo)
-                .setIcon(new IconDrawable(this, FontAwesomeIcons.fa_plus).colorRes(R.color.colorAccent).actionBarSize())
-                .setPositiveButton(android.R.string.ok, this)
-                .show();
+    }
 
+    private void PonerTorneoFrag(Long id) {
+        Bundle args = new Bundle();
+        args.putLong("ID", id);
+        Fragment frag = Fragment.instantiate(this, TorneoFragment.class.getName(), args);
+
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.frag_container_principal, frag)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 }

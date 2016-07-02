@@ -19,6 +19,7 @@ import nofuemagia.prode.adapters.EquiposAdapter;
 import nofuemagia.prode.model.Equipo;
 import nofuemagia.prode.model.Liga;
 import nofuemagia.prode.model.Pais;
+import nofuemagia.prode.model.Usuario;
 
 public class IniciarSesion extends AppCompatActivity {
 
@@ -102,5 +103,10 @@ public class IniciarSesion extends AppCompatActivity {
         editor.putInt(Util.EQUIPO, idEquipo);
         editor.putBoolean(Util.TODO_LISTO, true);
         editor.apply();
+
+        Usuario actual = new Usuario();
+        actual.setNombre(nombre);
+        actual.setIdUsuario(id);
+        actual.save();
     }
 }
