@@ -22,18 +22,11 @@ public class Torneo extends Model {
     @Column(name = "creadorId")
     public Usuario usuario;
 
-    @Column(name = "sincronizado")
-    public int sincronizado;
+    @Column(name = "idRemoto")
+    public int idRemoto;
 
     public Torneo() {
         super();
-    }
-
-    public Torneo(String nombre, Liga liga, Usuario usuario, int sincronizado) {
-        this.nombre = nombre;
-        this.liga = liga;
-        this.usuario = usuario;
-        this.sincronizado = sincronizado;
     }
 
     public void setNombre(String nombre) {
@@ -48,8 +41,8 @@ public class Torneo extends Model {
         this.usuario = usuario;
     }
 
-    public void setSincronizado(int sincronizado) {
-        this.sincronizado = sincronizado;
+    public void setIdRemoto(int idRemoto) {
+        this.idRemoto = idRemoto;
     }
 
     public String getNombre() {
@@ -64,8 +57,8 @@ public class Torneo extends Model {
         return usuario;
     }
 
-    public int isSincronizado() {
-        return sincronizado;
+    public int getIdRemoto() {
+        return idRemoto;
     }
 
     public static List<Torneo> getTorneos(Usuario fbid) {

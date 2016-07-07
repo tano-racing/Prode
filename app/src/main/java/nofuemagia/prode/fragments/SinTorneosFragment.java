@@ -1,5 +1,6 @@
 package nofuemagia.prode.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -16,9 +17,16 @@ import android.widget.EditText;
 import com.activeandroid.ActiveAndroid;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import nofuemagia.prode.R;
 import nofuemagia.prode.Util;
 import nofuemagia.prode.model.Liga;
@@ -110,37 +118,72 @@ public class SinTorneosFragment extends Fragment {
         }
     };
 
-    private void GuardarTorneo(Liga liga, String nombreTorneo) {
+    private void GuardarTorneo(final Liga liga, final String nombreTorneo) {
 
         SharedPreferences preferences = getContext().getSharedPreferences(Util.PREFERENCES, Context.MODE_PRIVATE);
 
-        Usuario actual = Usuario.getUsuario(preferences.getString(Util.FBID, null));
+        final Usuario actual = Usuario.getUsuario(preferences.getString(Util.FBID, null));
 
-        ActiveAndroid.beginTransaction();
+        final ProgressDialog dialog = ProgressDialog.show(getContext(), getString(R.string.app_name), getString(R.string.creando_torneo), false);
+        dialog.setProgress(0);
 
-        Torneo nuevo = new Torneo();
-        nuevo.setLiga(liga);
-        nuevo.setNombre(nombreTorneo);
-        nuevo.setUsuario(actual);
-        nuevo.setSincronizado(0);
-        nuevo.save();
+        RequestParams params = new RequestParams();
+        params.put("nombre", nombreTorneo);
+        params.put("ligaId", liga.getId());
+        params.put("creadorId", actual.getIdRemoto());
 
-        UsuarioTorneo participante = new UsuarioTorneo();
-        participante.setUsuario(actual);
-        participante.setTorneo(nuevo);
-        participante.setPuntos(0);
-        participante.setPronosticosAcertados(0);
-        participante.setPronosticosTotales(0);
-        participante.save();
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(Util.URL + Util.URL_TORNEOS, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
-        if (participante.getId() != -1) {
-            ActiveAndroid.setTransactionSuccessful();
-            ActiveAndroid.endTransaction();
+                try {
+                    int idRemoto = response.getInt("idRemoto");
 
-            onTorneoListener.TorneoCreado(nuevo.getId());
-        } else {
-            onTorneoListener.Error("Error desconocido");
-        }
+                    ActiveAndroid.beginTransaction();
+
+                    Torneo nuevo = new Torneo();
+                    nuevo.setLiga(liga);
+                    nuevo.setNombre(nombreTorneo);
+                    nuevo.setUsuario(actual);
+                    nuevo.setIdRemoto(idRemoto);
+                    nuevo.save();
+
+                    UsuarioTorneo participante = new UsuarioTorneo();
+                    participante.setUsuario(actual);
+                    participante.setTorneo(nuevo);
+                    participante.setPuntos(0);
+                    participante.setPronosticosAcertados(0);
+                    participante.setPronosticosTotales(0);
+                    participante.save();
+
+                    dialog.dismiss();
+
+                    if (participante.getId() != -1) {
+                        ActiveAndroid.setTransactionSuccessful();
+                        ActiveAndroid.endTransaction();
+
+                        onTorneoListener.TorneoCreado(nuevo.getId());
+                    } else {
+                        onTorneoListener.Error("Error desconocido");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                System.out.println(responseString);
+            }
+
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+                super.onProgress(bytesWritten, totalSize);
+                dialog.setMax((int) totalSize);
+                dialog.setProgress((int) bytesWritten);
+            }
+        });
     }
 
     private void unirseLiga(View view) {

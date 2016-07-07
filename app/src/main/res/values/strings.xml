@@ -10,5 +10,7 @@
 
     <string name="account_type">nofuemagia.prode</string>
     <string name="authority">nofuemagia.prode.sync.provider</string>
+
     <string name="creando_usuario">Creando usuario</string>
+    <string name="creando_torneo">Creando torneo</string>
 </resources>
