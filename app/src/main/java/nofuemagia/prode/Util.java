@@ -1,6 +1,9 @@
 package nofuemagia.prode;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.res.Resources;
 
 /**
  * Created by jlionti on 01/07/2016. No Fue Magia
@@ -13,15 +16,15 @@ public class Util {
     public static final String TODO_LISTO = "TODO_LISTO";
 
     public static int getResId(Context c, String resName, String pResourcename) {
-
         return c.getResources().getIdentifier(resName, pResourcename, c.getPackageName());
-
-//        try {
-//            Field idField = c.getDeclaredField(resName);
-//            return idField.getInt(idField);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return -1;
-//        }
     }
+
+    public static Account CreateSyncAccount(Context context) {
+        Resources res = context.getResources();
+        Account newAccount = new Account(res.getString(R.string.app_name), res.getString(R.string.account_type));
+        AccountManager accountManager = (AccountManager) context.getSystemService(context.ACCOUNT_SERVICE);
+        accountManager.addAccountExplicitly(newAccount, null, null); //boolean
+        return newAccount;
+    }
+
 }

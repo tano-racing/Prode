@@ -1,6 +1,7 @@
 package nofuemagia.prode.activities;
 
 import android.app.ActionBar;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import nofuemagia.prode.model.Equipo;
 import nofuemagia.prode.model.Liga;
 import nofuemagia.prode.model.Pais;
 import nofuemagia.prode.model.Usuario;
+import nofuemagia.prode.sync.SyncAdapter;
 
 public class IniciarSesion extends AppCompatActivity {
 
@@ -80,7 +82,7 @@ public class IniciarSesion extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Equipo equipo = adapter.getItem(i);
-                        guardarInformacion("0123456789", "Julián Patricio Lionti", equipo.getId().intValue());
+                        guardarInformacion("0987654321", "Otro usuario", equipo.getId().intValue());
                         iniciarProde();
                     }
                 })
@@ -108,5 +110,14 @@ public class IniciarSesion extends AppCompatActivity {
         actual.setNombre(nombre);
         actual.setIdUsuario(id);
         actual.save();
+
+        Bundle args = new Bundle();
+        args.putString(SyncAdapter.QUE, "Usuarios");
+        args.putString(SyncAdapter.OPERACION, "Crear");
+        args.putLong(SyncAdapter.ID, actual.getId());
+        args.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        args.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+
+        ContentResolver.requestSync(Util.CreateSyncAccount(this), getString(R.string.authority), args);
     }
 }

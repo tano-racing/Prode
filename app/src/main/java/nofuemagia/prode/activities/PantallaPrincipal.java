@@ -31,12 +31,16 @@ public class PantallaPrincipal extends AppCompatActivity implements SinTorneosFr
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pantalla_principal);
 
         preferences = getSharedPreferences(Util.PREFERENCES, MODE_PRIVATE);
+        //preferences.edit().clear().apply();
 
+        Util.CreateSyncAccount(this);
         if (!InicioSesion())
             return;
+
+
+        setContentView(R.layout.activity_pantalla_principal);
 
         Usuario actual = Usuario.getUsuario(preferences.getString(Util.FBID, null));
         List<Torneo> torneos = Torneo.getTorneos(actual);
