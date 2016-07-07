@@ -31,4 +31,6 @@ dependencies {
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 
+    compile 'com.loopj.android:android-async-http:1.4.9'
+
 }

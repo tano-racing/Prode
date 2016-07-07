@@ -15,6 +15,12 @@ public class Util {
     public static final String EQUIPO = "EQUIPO";
     public static final String TODO_LISTO = "TODO_LISTO";
 
+
+    public static final String URL = "http://nofuemagia.ueuo.com/Prode/backend/";
+    public static final String URL_USUARIOS = "usuarios/crearUsuario.php";
+    public static final String URL_TORNEOS = "torneos/crearTorneo.php";
+
+
     public static int getResId(Context c, String resName, String pResourcename) {
         return c.getResources().getIdentifier(resName, pResourcename, c.getPackageName());
     }

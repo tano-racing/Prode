@@ -10,4 +10,5 @@
 
     <string name="account_type">nofuemagia.prode</string>
     <string name="authority">nofuemagia.prode.sync.provider</string>
+    <string name="creando_usuario">Creando usuario</string>
 </resources>

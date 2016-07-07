@@ -17,14 +17,11 @@ public class Usuario extends Model {
     @Column(name = "idUsuario")
     public String idUsuario;
 
+    @Column(name = "idRemoto")
+    public int idRemoto;
+
     public Usuario() {
         super();
-    }
-
-    public Usuario(String nombre, String idUsuario) {
-        super();
-        this.nombre = nombre;
-        this.idUsuario = idUsuario;
     }
 
     public void setNombre(String nombre) {
@@ -41,6 +38,14 @@ public class Usuario extends Model {
 
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public int getIdRemoto() {
+        return idRemoto;
+    }
+
+    public void setIdRemoto(int idRemoto) {
+        this.idRemoto = idRemoto;
     }
 
     public static Usuario getUsuario(String fbid) {

@@ -1,6 +1,7 @@
 package nofuemagia.prode.activities;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,8 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import nofuemagia.prode.R;
 import nofuemagia.prode.Util;
 import nofuemagia.prode.adapters.EquiposAdapter;
@@ -71,19 +80,15 @@ public class IniciarSesion extends AppCompatActivity {
         List<Equipo> equipos = Equipo.getEquipos(primera);
 
         final EquiposAdapter adapter = new EquiposAdapter(this, equipos);
-//        CharSequence[] equiposStrings = new CharSequence[equipos.size()];
-//
-//        for (int i = 0; i < equipos.size(); i++)
-//            equiposStrings[i] = equipos.get(i).getNombre();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
         builder.setTitle("¿De que cuadro sos hincha?")
                 .setAdapter(adapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Equipo equipo = adapter.getItem(i);
+
+                        dialogInterface.dismiss();
                         guardarInformacion("0987654321", "Otro usuario", equipo.getId().intValue());
-                        iniciarProde();
                     }
                 })
                 .show();
@@ -97,27 +102,56 @@ public class IniciarSesion extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void guardarInformacion(String id, String nombre, int idEquipo) {
-        SharedPreferences preferences = getSharedPreferences(Util.PREFERENCES, MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Util.FBID, id);
-        editor.putString(Util.NOMBRE, nombre);
-        editor.putInt(Util.EQUIPO, idEquipo);
-        editor.putBoolean(Util.TODO_LISTO, true);
-        editor.apply();
+    private void guardarInformacion(final String id, final String nombre, final int idEquipo) {
+        final ProgressDialog dialog = ProgressDialog.show(this, getString(R.string.app_name), getString(R.string.creando_usuario), false);
+        dialog.setProgress(0);
 
-        Usuario actual = new Usuario();
-        actual.setNombre(nombre);
-        actual.setIdUsuario(id);
-        actual.save();
+        RequestParams params = new RequestParams();
+        params.put("nombre", nombre);
+        params.put("idUsuario", id);
 
-        Bundle args = new Bundle();
-        args.putString(SyncAdapter.QUE, "Usuarios");
-        args.putString(SyncAdapter.OPERACION, "Crear");
-        args.putLong(SyncAdapter.ID, actual.getId());
-        args.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        args.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(Util.URL + Util.URL_USUARIOS, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
-        ContentResolver.requestSync(Util.CreateSyncAccount(this), getString(R.string.authority), args);
+                try {
+                    int idRemoto = response.getInt("idRemoto");
+
+                    Usuario actual = new Usuario();
+                    actual.setNombre(nombre);
+                    actual.setIdUsuario(id);
+                    actual.setIdRemoto(idRemoto);
+                    actual.save();
+
+                    SharedPreferences preferences = getSharedPreferences(Util.PREFERENCES, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(Util.FBID, id);
+                    editor.putString(Util.NOMBRE, nombre);
+                    editor.putInt(Util.EQUIPO, idEquipo);
+                    editor.putBoolean(Util.TODO_LISTO, true);
+                    editor.apply();
+
+                    dialog.dismiss();
+
+                    iniciarProde();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                System.out.println(responseString);
+            }
+
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+                super.onProgress(bytesWritten, totalSize);
+                dialog.setMax((int) totalSize);
+                dialog.setProgress((int) bytesWritten);
+            }
+        });
     }
 }
